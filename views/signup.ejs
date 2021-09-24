@@ -8,5 +8,25 @@
   </head>
   <body>
     <h1>Signup</h1>
+    <form action="/signup" method="POST">
+      <div>
+        <label for="username">Enter Username:</label>
+        <input type="text" name="username" placeholder="username" />
+      </div>
+      <div>
+        <label for="password">Enter Password:</label>
+        <input type="password" name="password" placeholder="password" />
+      </div>
+      <div>
+        <label for="confirm">Confirm password</label>
+        <input
+          type="password"
+          name="confirm"
+          id="confirm"
+          placeholder="confirm password"
+        />
+      </div>
+      <button>Sign Up</button>
+    </form>
   </body>
 </html>

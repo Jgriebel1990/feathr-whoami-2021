@@ -2,6 +2,21 @@ const express = require("express");
 const app = express();
 const User = require("./models/user");
 const path = require("path");
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+
+mongoose
+  .connect("mongodb://localhost:27017/whoami", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Mongo Connection Open");
+  })
+  .catch((e) => {
+    console.log("Mongo Connection Error");
+    console.log(e);
+  });
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -21,6 +36,17 @@ app.get("/base", (req, res) => {
 
 app.get("/signup", (req, res) => {
   res.render("signup");
+});
+
+app.post("/signup", async (req, res) => {
+  const { password, username } = req.body;
+  const hash = await bcrypt.hash(password, 12);
+  const user = new User({
+    username,
+    password: hash,
+  });
+  await user.save();
+  res.redirect("/base");
 });
 
 app.get("/login", (req, res) => {
