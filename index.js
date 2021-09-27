@@ -27,11 +27,10 @@ app.use(
 );
 
 // Once logged in, the user should be taken to /me where they can see their username on the page.
-// Navigating to /logout should log the user out and take them back to /login.
 // A test for each aforementioned route should be written in tests/test_whoami.py
 // Fill in the "Implementation" and "Limitations/Future Work" sections of the NOTES.rst file - future work - staying logged in, implementing cookies etc...
 
-app.get("/base", (req, res) => {
+app.get("/", (req, res) => {
   res.render("base");
 });
 
@@ -49,7 +48,7 @@ app.post("/signup", async (req, res) => {
   });
   await user.save();
   req.session.user_id = user._id; //when you signup for a new user grab the _id for the user and associate it with an individual browser
-  res.redirect("/base");
+  res.redirect("/");
 });
 
 app.get("/login", (req, res) => {
@@ -70,6 +69,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
+// Navigating to /logout should log the user out and take them back to /login.
 app.post("/logout", (req, res) => {
   req.session.user_id = null;
   // req.session.destroy();
@@ -77,7 +77,9 @@ app.post("/logout", (req, res) => {
 });
 
 // Users should not be able to access /me without logging in.
-app.get("/me", (req, res) => {
+app.get("/me", async (req, res) => {
+  // const { password, username } = req.body;
+  // const user = await User.findOne({ username });
   if (!req.session.user_id) {
     return res.redirect("/login");
   }
