@@ -79,7 +79,6 @@ app.post("/logout", (req, res) => {
 // Users should not be able to access /me without logging in.
 app.get("/me", async (req, res) => {
   const { username } = req.session;
-  // const user = await User.findOne({ username });
   if (!req.session.user_id) {
     return res.redirect("/login");
   }
