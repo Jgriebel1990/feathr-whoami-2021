@@ -22,7 +22,9 @@ mongoose
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
-app.use(session({ secret: "not a secret" }));
+app.use(
+  session({ secret: "not a secret", resave: true, saveUninitialized: true })
+);
 
 // Once logged in, the user should be taken to /me where they can see their username on the page.
 // Navigating to /logout should log the user out and take them back to /login.
@@ -60,17 +62,24 @@ app.post("/login", async (req, res) => {
   const user = await User.findOne({ username });
   const validPassword = await bcrypt.compare(password, user.password);
   if (validPassword) {
-    req.session.user_id = user._id; //when you login to a new session grab the _id for the user. Associating a user id in the session with an individual browser
-    res.send("Logged In");
+    //when you login to a new session grab the _id for the user. Associating a user id in the session with an individual browser. if validPassword is successful user is sent to '/me'. if authentication fails user is routed back to '/login' page.
+    req.session.user_id = user._id;
+    res.redirect("/me");
   } else {
-    res.send("Try Again");
+    res.redirect("/login");
   }
+});
+
+app.post("/logout", (req, res) => {
+  // req.session.user_id = null;
+  req.session.destroy();
+  res.redirect("/login");
 });
 
 // Users should not be able to access /me without logging in.
 app.get("/me", (req, res) => {
   if (!req.session.user_id) {
-    res.redirect("/login");
+    return res.redirect("/login");
   }
   res.render("me");
 });
