@@ -72,18 +72,17 @@ app.post("/login", async (req, res) => {
 // Navigating to /logout should log the user out and take them back to /login.
 app.post("/logout", (req, res) => {
   req.session.user_id = null;
-  // req.session.destroy();
   res.redirect("/login");
 });
 
 // Users should not be able to access /me without logging in.
-app.get("/me", async (req, res) => {
-  // const { password, username } = req.body;
-  // const user = await User.findOne({ username });
+app.get("/me", (req, res) => {
+  const username = req.body.username;
+  const user = User.find({ username });
   if (!req.session.user_id) {
     return res.redirect("/login");
   }
-  res.render("me");
+  res.render("me", { username: user });
 });
 
 app.listen(3000, () => {
