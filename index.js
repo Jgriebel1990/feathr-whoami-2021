@@ -56,12 +56,13 @@ app.get("/login", (req, res) => {
 });
 
 // After signing up, a user should be able to login with username and password at the /login page.
+//when you login to a new session grab the _id for the user. Associating a user id in the session with an individual browser. if validPassword is successful user is sent to '/me'. if authentication fails user is routed back to '/login' page.
 app.post("/login", async (req, res) => {
   const { password, username } = req.body;
   const user = await User.findOne({ username });
   const validPassword = await bcrypt.compare(password, user.password);
   if (validPassword) {
-    //when you login to a new session grab the _id for the user. Associating a user id in the session with an individual browser. if validPassword is successful user is sent to '/me'. if authentication fails user is routed back to '/login' page.
+    req.session.username = username;
     req.session.user_id = user._id;
     res.redirect("/me");
   } else {
@@ -76,13 +77,13 @@ app.post("/logout", (req, res) => {
 });
 
 // Users should not be able to access /me without logging in.
-app.get("/me", (req, res) => {
-  const username = req.body.username;
-  const user = User.find({ username });
+app.get("/me", async (req, res) => {
+  const { username } = req.session;
+  // const user = await User.findOne({ username });
   if (!req.session.user_id) {
     return res.redirect("/login");
   }
-  res.render("me", { username: user });
+  res.render("me", { username: username });
 });
 
 app.listen(3000, () => {
