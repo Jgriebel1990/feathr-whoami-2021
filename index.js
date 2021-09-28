@@ -26,9 +26,6 @@ app.use(
   session({ secret: "not a secret", resave: true, saveUninitialized: true })
 );
 
-// A test for each aforementioned route should be written in tests/test_whoami.py
-// Fill in the "Implementation" and "Limitations/Future Work" sections of the NOTES.rst file - future work - staying logged in, implementing cookies etc...
-
 app.get("/", (req, res) => {
   res.render("base");
 });
@@ -60,7 +57,6 @@ app.post("/login", async (req, res) => {
   const { password, username } = req.body;
   const user = await User.findOne({ username });
   const validPassword = await bcrypt.compare(password, user.password);
-  //when you login to a new session grab the _id for the user. Associating a user id in the session with an individual browser.
   //if validPassword is successful user is sent to '/me'. if authentication fails user is routed back to '/login' page.
   if (validPassword) {
     req.session.username = username;
@@ -79,7 +75,7 @@ app.post("/logout", (req, res) => {
 
 // Users should not be able to access /me without logging in.
 // Once logged in, the user should be taken to /me where they can see their username on the page.
-app.get("/me", async (req, res) => {
+app.get("/me", (req, res) => {
   const { username } = req.session;
   if (!req.session.user_id) {
     return res.redirect("/login");
