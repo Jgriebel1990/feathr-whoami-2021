@@ -8,7 +8,7 @@ To start mongo you will need to run this command
 
 `brew services start mongodb-community@5.0`
 
-Then once the files have been downloaded in the whoami directory to install all dependencies use
+Then once the files have been downloaded got to the whoami directory and in your terminal run
 
 `npm install`
 
