@@ -36,10 +36,12 @@ app.get("/signup", (req, res) => {
 
 // A new user should be able to sign up with username and password at the /signup page.
 app.post("/signup", async (req, res) => {
+  //I destructured the req.body.username and req.body.password so I could pass those values into the hash method and when creating a new user in the database.
   const { password, username } = req.body;
   const hash = await bcrypt.hash(password, 12);
   const user = new User({
     username,
+    //password: hash allows the password to become hashed in the database
     password: hash,
   });
   await user.save();
@@ -59,6 +61,8 @@ app.post("/login", async (req, res) => {
   const validPassword = await bcrypt.compare(password, user.password);
   //if validPassword is successful user is sent to '/me'. if authentication fails user is routed back to '/login' page.
   if (validPassword) {
+    //the req.session.username = username was the key to being able to render the username on /me. This took me the most time out of any part of my code.
+    //passing the username through the login made the username available once the login was successful and /me was rendered.
     req.session.username = username;
     req.session.user_id = user._id;
     res.redirect("/me");
@@ -76,6 +80,7 @@ app.post("/logout", (req, res) => {
 // Users should not be able to access /me without logging in.
 // Once logged in, the user should be taken to /me where they can see their username on the page.
 app.get("/me", (req, res) => {
+  //I destructured username from req.session.username and was able to pass username into the render method which gave me the result that was needed.
   const { username } = req.session;
   if (!req.session.user_id) {
     return res.redirect("/login");

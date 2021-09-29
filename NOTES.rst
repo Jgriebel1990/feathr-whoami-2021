@@ -27,6 +27,25 @@ going to maintain their authenticated session? Etc.
 
     when a user logs out the session is set to null. I could have also used req.session.destroy() which destroys the session and will unset the req.session property.
 
+    For me I was very excited to learn of the assignment. 
+    I have been relearning javascript and node for the last few months
+    so when I learned that I would could use that I wanted to do the best I could.
+
+    I had experience with express routing and mongo, but I had not had the chance to use those together to create authentication.
+    On a previous personal project of mine I used google firestore and firebase to create authentication. So I was very excited to learn auth from scratch 
+    
+    There were a few packages that I had to learn to create this app. bcrypt and express-session were brand new to me. I did follow a tutorial for these sections of my code.
+    The process that I like to follow with tutorials is to watch or read the whole thing first and then try to write the code. If I have trouble with a certain area I will bring up the tutorial and code along with it.
+    So the biggest learning curve was combining those two with express and mongo to create a user in mongo, store the password securely and then retrive them upon login.
+    It also took me a day or so to implement the username rendering on the /me page after login. I was close a few times. I could render the user_id, but not the username.
+    I eventually figured it out by kind of reverse engineering my own code, so I was really excited when I finally got it working.
+
+    I know that the instructions said not to work more than 5 hours on this project, but for me there were two reasons why I wanted to work extra hard and go beyond a little bit.
+    For one it was only the second or third time during an interview process for a software engineering role that I actually felt confident that I could produce a good result. 
+    So I tried as best I could.
+    Second is that I really really want to work for Feathr, so if I didnt do the best that I could to my ability I would have felt bad and felt like I missed a great opportunity.
+
+
 Limitations, Future Work
 ========================
 
